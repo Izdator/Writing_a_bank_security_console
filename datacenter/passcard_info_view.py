@@ -14,6 +14,10 @@ def calculate_and_format_duration(visit):
     return duration, formatted_duration
 
 
+def is_suspicious(duration):
+    return duration > 60
+
+
 def passcard_info_view(request, passcode):
     passcard = get_object_or_404(Passcard, passcode=passcode)
 
@@ -22,12 +26,12 @@ def passcard_info_view(request, passcode):
     visits = Visit.objects.filter(passcard=passcard)
     for visit in visits:
         duration, formatted_duration = calculate_and_format_duration(visit)
-        is_strange = duration > 60
+        suspicious = is_suspicious(duration)
 
         this_passcard_visits.append({
             'entered_at': visit.entered_at.strftime('%d-%m-%Y %H:%M'),
             'duration': formatted_duration,
-            'is_strange': is_strange
+            'is_strange': suspicious
         })
 
     context = {
