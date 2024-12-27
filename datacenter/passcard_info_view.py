@@ -3,11 +3,15 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 
 
-def get_duration(visit):
+def calculate_and_format_duration(visit):
     if visit.leaved_at:
-        return (visit.leaved_at - visit.entered_at).total_seconds() / 60
+        duration = (visit.leaved_at - visit.entered_at).total_seconds() / 60
     else:
-        return (timezone.now() - visit.entered_at).total_seconds() / 60
+        duration = (timezone.now() - visit.entered_at).total_seconds() / 60
+
+    formatted_duration = "{:02}:{:02}".format(int(duration // 60), int(duration % 60))
+
+    return duration, formatted_duration
 
 
 def passcard_info_view(request, passcode):
@@ -17,12 +21,12 @@ def passcard_info_view(request, passcode):
 
     visits = Visit.objects.filter(passcard=passcard)
     for visit in visits:
-        duration = get_duration(visit)
+        duration, formatted_duration = calculate_and_format_duration(visit)
         is_strange = duration > 60
 
         this_passcard_visits.append({
             'entered_at': visit.entered_at.strftime('%d-%m-%Y %H:%M'),
-            'duration': "{:02}:{:02}".format(int(duration // 60), int(duration % 60)),
+            'duration': formatted_duration,
             'is_strange': is_strange
         })
 
