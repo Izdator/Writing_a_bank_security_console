@@ -1,7 +1,7 @@
 from datacenter.models import Visit
 from django.shortcuts import render
 from django.utils import timezone
-from .utils import calculate_and_format_duration, is_suspicious
+from .utils import get_duration, format_duration, is_suspicious
 
 
 def storage_information_view(request):
@@ -9,9 +9,10 @@ def storage_information_view(request):
 
     open_visits_data = []
     for visit in open_visits:
-        duration, formatted_duration = calculate_and_format_duration(visit)
+        duration = get_duration(visit)  # Получаем продолжительность
+        formatted_duration = format_duration(duration)  # Форматируем продолжительность
 
-        suspicious = is_suspicious(duration)
+        suspicious = is_suspicious(duration)  # Проверяем на подозрительность
 
         open_visits_data.append({
             'who_entered': visit.passcard.owner_name,

@@ -1,6 +1,6 @@
 from datacenter.models import Passcard, Visit
 from django.shortcuts import render, get_object_or_404
-from .utils import calculate_and_format_duration, is_suspicious
+from .utils import get_duration, format_duration, is_suspicious
 
 
 def passcard_info_view(request, passcode):
@@ -10,7 +10,8 @@ def passcard_info_view(request, passcode):
 
     visits = Visit.objects.filter(passcard=passcard)
     for visit in visits:
-        duration, formatted_duration = calculate_and_format_duration(visit)
+        duration = get_duration(visit)
+        formatted_duration = format_duration(duration)
         suspicious = is_suspicious(duration)
 
         this_passcard_visits.append({
