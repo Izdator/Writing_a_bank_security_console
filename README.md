@@ -3,18 +3,45 @@
 ## Описание
 Этот проект - система управления пропусками на базе Django. Она позволяет отслеживать посещения пользователей, проверять длительность визитов и выявлять подозрительные активности.
 
+## Требования
+
+- Python 3.8+
+- Django 4.2+
+- Django REST Framework
+
 ## Установка
 
-1. Клонирование репозитория:
+Клонируйте репозиторий:
+
+```
 bash
 git clone [https://github.com/your_username/your_repository.git](https://github.com/Izdator/Writing_a_bank_security_console)
 cd Writing_a_bank_security_console
+```
 
-3. Установите необходимые зависимости:
+Создайте виртуальное окружение:
+
+```
+bash
+python3 -m venv env
+source venv/bin/activate  # Для Windows: venv\Scripts\activate
+```
+
+Установите необходимые зависимости:
+```
 bash
 pip install -r requirements.txt
+```
 
-Теперь приложение будет доступно по адресу `http://127.0.0.1:8000/`.
+Примените миграции базы данных:
+```
+python manage.py migrate
+```
+
+Запустите сервер с сайтом на localhost:
+```
+python manage.py runserver 127.0.0.1:8000.
+```
 
 ## Модели
 
